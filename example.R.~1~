@@ -1,0 +1,6 @@
+
+# load 5 years of data into R
+
+gwinnett <- readTD3505_noaa(747808,63803, 2006,2010)
+
+# windRose
