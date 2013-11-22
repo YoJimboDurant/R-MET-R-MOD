@@ -13,13 +13,13 @@ setInternet2(use = NA)
     {
       for (j in 1:12)
       {
-        TDfile <- paste("ftp://ftp.ncdc.noaa.gov/pub/data/asos-onemin/6405-",year[i],"/64050",station_ID,year[i],sprintf("%02d", j),".dat", sep="")
-        destFile <- paste(".\\", as.character(year[i]),"\\","64050",station_ID,year[i], sprintf("%02d", j), sep="")
-        download.file(TDfile, destFile)
+        TDfile <- paste("ftp://ftp.ncdc.noaa.gov/pub/data/asos-onemin/6405-",years[i],"/64050",station_ID,years[i],sprintf("%02d", j),".dat", sep="")
+        destFile <- paste(".\\", as.character(years[i]),"\\","64050",station_ID,years[i], sprintf("%02d", j), sep="")
+        if(!file.exists(destFile)) download.file(TDfile, destFile)
       }
     }
     
     return(NULL)
   }
 
-}
+
