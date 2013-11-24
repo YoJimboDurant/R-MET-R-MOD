@@ -9,9 +9,9 @@ writeAMInpfile <- function(inpname="AM", ifg="y", start, stop)
   
   for (i in 1:length(years)){
   myfile <- paste(inpname, as.character(years[i]), ".inp", sep="")
-  myfile <- paste(".\\",years[i],"\\", myfile, sep="")
+  myfile <- paste("./",years[i],"/", myfile, sep="")
 
-  myfiles <- dir(paste(".\\", as.character(years[i]), sep=""))
+  myfiles <- dir(paste("./", as.character(years[i]), sep=""))
   ids <- grep("^[[:digit:]]+[[:upper:]]{4}[[:digit:]]+[.]dat",myfiles,value = FALSE)
   
   
