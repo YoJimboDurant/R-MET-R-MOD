@@ -46,7 +46,7 @@ writeAMInpfile <- function(inpname="AM", ifg="y", start, stop)
                                 "summ","11059.dat", sep="_")), file=myfile, append=TRUE)
   
   cat(paste("\ncompfile", paste(inpname, "1min", as.character(years[i]),
-                                "summ","11059.dat", sep="_")), file=myfile, append=TRUE)
+                                "comp","11059.dat", sep="_")), file=myfile, append=TRUE)
   
   cat("\nOUTFILES FINISHED", file=myfile, append=TRUE)
   
