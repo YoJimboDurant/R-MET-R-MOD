@@ -9,12 +9,12 @@ getSurf <- function(stateFile="choose"){
   require(stringr)
   require(R.utils)
   if(!file.exists("aersurface")) dir.create("aersurface")
-  
+
   httpSite <- "http://edcftp.cr.usgs.gov/pub/data/landcover/states/"
 
-  
+
   if(stateFile=="choose"){
-    
+
     con=url(httpSite)
     indexData <- readLines(con)
     close(con)
@@ -23,27 +23,27 @@ getSurf <- function(stateFile="choose"){
     indexData <- substring(indexData, 7)
     print(indexData)
     i <- scan(n=1)
-    
+
     httpFile <- paste(httpSite, indexData[i], sep="")
-    
+
     download.file(httpFile, paste("./aersurface/", indexData[i], sep=""))
-    gunzip( paste("./aersurface/", indexData[i], sep=""), 
+    gunzip( paste("./aersurface/", indexData[i], sep=""),
             destname=paste("./aersurface/", gsub("[.]gz$", "",
                       indexData[i]), sep=""), overwrite=TRUE)
-    
-    
+
+
   } else {
     httpFile <- paste(httpSite, stateFile, sep="")
     download.file(httpFile, paste("./aersurface/", stateFile, sep=""))
     if(grepl("[.]gz$", stateFile)) {
-      gunzip( paste("./aersurface/", stateFile, sep=""), 
+      gunzip( paste("./aersurface/", stateFile, sep=""),
         destname=paste("./aersurface/", gsub("[.]gz$", "", stateFile), sep=""),
               overwrite=TRUE)
     }
     return(destname)
   }
 }
-  
+
   readLocSurf = function(year){
     ishFile <- grep("[.]ish$", dir(path=paste(year, "/", sep="")), value=TRUE)
     TD3505<-read.fwf(file=paste("./", year, "/", ishFile, sep=""), widths=c(4,6,5,4,2,2,2,2,1,6,7,5,5,5,4,3,1,1,4,1,5,1,1,1,6,1,1,1,5,1,5,1,5,1), n=1)
@@ -82,16 +82,16 @@ getSurf <- function(stateFile="choose"){
       "dewpoint_quality_code",
       "sea_level_pressure",
       "sea_level_pressure_quality_code")
-    
+
     names(TD3505)<-td_names
-    
+
     lat <- TD3505$lattitude/1000
     long <- TD3505$longitude/1000
     msl <- TD3505$elevation_relative_msl
     return(c(year=year, surf.WMO = TD3505$USAF_master_station, surf.wban = TD3505$NCDC_WBAN_identifier, surf.lat=lat,surf.long=long, surf.elev=msl))
   }
-  
-  
+
+
   readLocUA <- function(year){
     fslFile <- grep("[.]fsl$", dir(path=paste(year, "/", sep="")), value=TRUE)
     urDat <- read.table(paste("./",year, "/", fslFile, sep=""),skip=1, nrow=1)
@@ -99,17 +99,17 @@ getSurf <- function(stateFile="choose"){
     WBAN <- urDat$V2
     WMO <- urDat$V3
     if(grepl("N", urDat$V4))lat <- gsub("N", "", urDat$V4)
-        
+
     if(grepl("S", urDat$V4))lat <- gsub("N", "-", urDat$V4)
-  
-    
+
+
     if(grepl("W", urDat$V5)) long <- gsub("W", "", urDat$V5)
     if(grepl("E", urDat$V5)) long <- gsub("E", "", urDat$V5)
     elev <- urDat$V6
     c(year= year, ua.WMO=WMO, ua.WBAN=WBAN, ua.lat=lat,ua.long=long, ua.elev=elev)
   }
-  
-aerSurf.R <- function(startYear,stopYear, stateFile="choose", state="TX", stateRegion="N", 
+
+aerSurf.R <- function(startYear,stopYear, stateFile="choose", state="TX", stateRegion="N",
                       radius="1.0",
                       sector="Y",
                       nsector=12,
@@ -117,7 +117,7 @@ aerSurf.R <- function(startYear,stopYear, stateFile="choose", state="TX", stateR
                       snow="N",
                       airport="Y",
                       arid="N",
-                      moisture="A",  
+                      moisture="A",
                       pathexecutable="aersurface_exe"){
   require(plyr)
   # browser()
@@ -125,20 +125,20 @@ aerSurf.R <- function(startYear,stopYear, stateFile="choose", state="TX", stateR
   years <- seq(startYear, stopYear, by=1)
   sdExist <- sapply(as.character(years), FUN=file.exists )
   if(!all(sdExist)) stop(paste("\nSubdirectory missing for:", years[!sdExist], sep=" "))
-  
+
   surfStation <- ldply(years, readLocSurf)
   urStation <- ldply(years, readLocUA)
-  
+
   stationData <- merge(surfStation, urStation)
 
   # get binary data for landuse
   destfile <- getSurf(stateFile)
   destfile <- destfile[1]
-  
-  
-  
+
+
+
  writeSurfInp <- function(year, destfile=destfile, state=state,
-                          stateRegion=stateRegion, 
+                          stateRegion=stateRegion,
                           stationData=stationData,
                           radius=radius,
                           sector=sector,
@@ -147,7 +147,7 @@ aerSurf.R <- function(startYear,stopYear, stateFile="choose", state="TX", stateR
                           snow=snow,
                           airport=airport,
                           arid=arid,
-                          moisture=moisture){  
+                          moisture=moisture){
     outfile <-  paste("\"./", year, "/aersurface.out\"", sep="")
     inpfile <-  paste("./", year, "/aersurface.surfinp", sep="")
     cat(paste("\"", destfile, "\"", "\n", sep=""), file=inpfile)
@@ -172,8 +172,8 @@ aerSurf.R <- function(startYear,stopYear, stateFile="choose", state="TX", stateR
 
   # create input file
 
-  l_ply(years, writeSurfInp, destfile=destfile, 
-        state=state, 
+  l_ply(years, writeSurfInp, destfile=destfile,
+        state=state,
         stateRegion=stateRegion,
         stationData=stationData,
         radius=radius,
@@ -185,21 +185,26 @@ aerSurf.R <- function(startYear,stopYear, stateFile="choose", state="TX", stateR
         arid=arid,
         moisture=moisture)
 
-  
+
   for(i in 1:length(years)){
     aersurface <- paste(getwd(), "/aersurface_exe/aersurface", sep="")
     inpfile <- paste("\"",years[i],"/aersurface.surfinp\"", sep="")
     if (R.version$os !="linux-gnu"){
       shell(paste(aersurface, "<", inpfile, sep="" ))
     }else{
-      if(R.version$os =="linux-gnu")
-        system(aersurface, input=paste(filePrefix, years[i],".inp", sep=""))
+      if(R.version$os =="linux-gnu"){
+          aersurface <- paste(getwd(), "/aersurface_exe/aersurface", sep="")
+          inpfile <- paste("\"",years[i],"/aersurface.surfinp\"", sep="")
+
+          system(paste(aersurface, "<", inpfile, sep="" ))
+      }
+
     }
 }
 
-  
-  
-  
-  
-  
+
+
+
+
+
 }

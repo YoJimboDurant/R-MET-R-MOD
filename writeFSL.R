@@ -1,15 +1,16 @@
-# writeFSL.R reads upper air data from NOAA website using RCurl and 
+# writeFSL.R reads upper air data from NOAA website using RCurl and
 # writes to year directory
 
 
 writeFSL <- function(WMO, startYear, stopYear){
   require(RCurl)
+  require(stringr)
 # Internet options for Windows
 
 if (R.version$os !="linux-gnu"){
-  setInternet2(use = NA) 
-  setInternet2(use = FALSE) 
-  setInternet2(use = NA) 
+  setInternet2(use = NA)
+  setInternet2(use = FALSE)
+  setInternet2(use = NA)
 }
 
   # check is directories exist and if not, create them
@@ -33,7 +34,7 @@ for (i in 1:length(years)){
                   access ="WMO Station Identifier",
                   view="NO",
                   osort="Station Series Sort",
-                  StationIDs = WMO, 
+                  StationIDs = WMO,
                   oformat = "FSL format (ASCII text)",
                   SUBMIT = "Continue Data Access")
 
@@ -41,6 +42,6 @@ for (i in 1:length(years)){
 
     download.file(tempFile, paste("./", years[i],"/", WMO, startYear, stopYear,".fsl", sep=""))
   }
-  
+
   return(NULL)
 }
