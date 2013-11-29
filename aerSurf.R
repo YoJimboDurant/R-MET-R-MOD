@@ -87,6 +87,18 @@ getSurf <- function(stateFile="choose"){
 
     lat <- TD3505$lattitude/1000
     long <- TD3505$longitude/1000
+# we need suffix N,S, E or W for lat and long
+    if (lat<0){
+      lat <- paste(gsub("-", "", lat), "S", sep="")
+    }else{
+      lat <- paste(lat, "N", sep="")
+    }
+    if (long<0){
+      long <- paste(gsub("-", "", long), "W", sep="")
+    }else{
+      lat <- paste(long, "E", sep="")
+    }
+    
     msl <- TD3505$elevation_relative_msl
     return(c(year=year, surf.WMO = TD3505$USAF_master_station, surf.wban = TD3505$NCDC_WBAN_identifier, surf.lat=lat,surf.long=long, surf.elev=msl))
   }
@@ -98,13 +110,8 @@ getSurf <- function(stateFile="choose"){
     if(urDat$V1 !=1) stop(paste("Check format of Upper airfile", year,"\n"))
     WBAN <- urDat$V2
     WMO <- urDat$V3
-    if(grepl("N", urDat$V4))lat <- gsub("N", "", urDat$V4)
-
-    if(grepl("S", urDat$V4))lat <- gsub("N", "-", urDat$V4)
-
-
-    if(grepl("W", urDat$V5)) long <- gsub("W", "", urDat$V5)
-    if(grepl("E", urDat$V5)) long <- gsub("E", "", urDat$V5)
+    lat <- as.character(urDat$V4)
+    long <- as.character(urDat$V5)
     elev <- urDat$V6
     c(year= year, ua.WMO=WMO, ua.WBAN=WBAN, ua.lat=lat,ua.long=long, ua.elev=elev)
   }
