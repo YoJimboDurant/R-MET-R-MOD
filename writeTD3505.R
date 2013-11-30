@@ -5,8 +5,8 @@ writeTD3505=function(station_ID, WBAN=99999, start, stop){
   {
     year=years[i]
     fileout<-readLines(con=gzcon(url(paste("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/",year,"/",station_ID,"-",WBAN,"-",year,".gz", sep=""))))
-    write(fileout, file=paste("./", years[i],"/","S",station_ID,"_",year, ".ish", sep=""))
+    write(fileout, file=paste("./", years[i],"/","S",station_ID,"_",year, ".ISH", sep=""))
   }
-  
+
   return(NULL)
 }

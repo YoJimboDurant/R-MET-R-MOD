@@ -45,7 +45,7 @@ getSurf <- function(stateFile="choose"){
 }
 
   readLocSurf = function(year){
-    ishFile <- grep("[.]ish$", dir(path=paste(year, "/", sep="")), value=TRUE)
+    ishFile <- grep("[.]ISH$", dir(path=paste(year, "/", sep="")), value=TRUE)
     TD3505<-read.fwf(file=paste("./", year, "/", ishFile, sep=""), widths=c(4,6,5,4,2,2,2,2,1,6,7,5,5,5,4,3,1,1,4,1,5,1,1,1,6,1,1,1,5,1,5,1,5,1), n=1)
     td_names<-c(
       "total_variable_characters",
@@ -105,7 +105,7 @@ getSurf <- function(stateFile="choose"){
 
 
   readLocUA <- function(year){
-    fslFile <- grep("[.]fsl$", dir(path=paste(year, "/", sep="")), value=TRUE)
+    fslFile <- grep("[.]FSL$", dir(path=paste(year, "/", sep="")), value=TRUE)
     urDat <- read.table(paste("./",year, "/", fslFile, sep=""),skip=1, nrow=1)
     if(urDat$V1 !=1) stop(paste("Check format of Upper airfile", year,"\n"))
     WBAN <- urDat$V2

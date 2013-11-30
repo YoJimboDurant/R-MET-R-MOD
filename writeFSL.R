@@ -40,7 +40,7 @@ for (i in 1:length(years)){
 
     tempFile <- paste("http://www.esrl.noaa.gov/raobs/", str_extract_all(qForm, "temp..*tmp"), sep="")
 
-    download.file(tempFile, paste("./", years[i],"/", WMO, startYear, stopYear,".fsl", sep=""))
+    download.file(tempFile, paste("./", years[i],"/", WMO, startYear, stopYear,".FSL", sep=""))
   }
 
   return(NULL)
