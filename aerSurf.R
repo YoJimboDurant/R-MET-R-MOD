@@ -44,7 +44,7 @@ getSurf <- function(stateFile="choose"){
   }
 }
 
-  readLocSurf = function(year){
+  readLocSurf = function(year, NS=TRUE){
     ishFile <- grep("[.]ISH$", dir(path=paste(year, "/", sep="")), value=TRUE)
     TD3505<-read.fwf(file=paste("./", year, "/", ishFile, sep=""), widths=c(4,6,5,4,2,2,2,2,1,6,7,5,5,5,4,3,1,1,4,1,5,1,1,1,6,1,1,1,5,1,5,1,5,1), n=1)
     td_names<-c(
@@ -87,7 +87,7 @@ getSurf <- function(stateFile="choose"){
 
     lat <- TD3505$lattitude/1000
     long <- TD3505$longitude/1000
-# we need suffix N,S, E or W for lat and long
+	if(NS){# we need suffix N,S, E or W for lat and long
     if (lat<0){
       lat <- paste(gsub("-", "", lat), "S", sep="")
     }else{
@@ -98,7 +98,7 @@ getSurf <- function(stateFile="choose"){
     }else{
       lat <- paste(long, "E", sep="")
     }
-    
+    }
     msl <- TD3505$elevation_relative_msl
     return(c(year=year, surf.WMO = TD3505$USAF_master_station, surf.wban = TD3505$NCDC_WBAN_identifier, surf.lat=lat,surf.long=long, surf.elev=msl))
   }
@@ -133,7 +133,7 @@ aerSurf.R <- function(startYear,stopYear, stateFile="choose", state="TX", stateR
   sdExist <- sapply(as.character(years), FUN=file.exists )
   if(!all(sdExist)) stop(paste("\nSubdirectory missing for:", years[!sdExist], sep=" "))
 
-  surfStation <- ldply(years, readLocSurf)
+  surfStation <- ldply(years, readLocSurf, NS=FALSE)
   urStation <- ldply(years, readLocUA)
 
   stationData <- merge(surfStation, urStation)
