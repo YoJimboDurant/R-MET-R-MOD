@@ -32,7 +32,7 @@ writeAMInpfile <- function(inpname="AM", ifg="y", start, stop)
   write(mminutefiles, file=myfile, append=TRUE)
   cat("DATAFILE FINISHED\n",file=myfile, append=TRUE)
   
-  ids <- grep(".ish", myfiles)
+  ids <- grep("[.]ISH", myfiles)
   ishfile <- myfiles[ids]
   
   cat("\nSURFDATA STARTING\n", file=myfile, append=TRUE)
