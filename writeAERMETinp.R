@@ -131,7 +131,7 @@ writeS3 <- function(year, anHeight=10){
 }
 
 
-writeAermetInp <- function(startYear, stopYear, tzCor=6, minFile=TRUE, onSite=FALSE, ...){
+writeAermetInp <- function(startYear, stopYear, tzCor=6, minFile=TRUE, onSite=FALSE, anHeight=10, ...){
   source("aerSurf.R")
   require(plyr)
   require(gdata)
@@ -152,7 +152,7 @@ writeAermetInp <- function(startYear, stopYear, tzCor=6, minFile=TRUE, onSite=FA
   l_ply(years, writeS2, minFile, onSite)
   
   #stage 3 input files written here:
-  l_ply(years, writeS2, minFile, onSite)
+  l_ply(years, writeS3, anHeight=anHeight)
   
 }
 

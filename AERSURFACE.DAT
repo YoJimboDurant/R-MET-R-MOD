@@ -1,0 +1,16 @@
+"./aersurface/texas_n.nlcd.bin"   ** Land use data file
+TX                                ** Postal Code
+N                                 ** Region of State
+"./2010/aersurface.out"           ** Output file with sfc values for AERMET Stage 3
+LATLON                            ** Coordinate type (UTM, LATLON)
+   32.900000                      ** Latitude
+  -97.033000                      ** Longitude
+NAD83                             ** Datum
+    1.0                           ** Study radius for surface roughness (km)
+Y                                 ** Vary by sector? (Y/N)
+12                                ** Number of sectors
+S                                 ** Temporal resolution (A=ANNUAL, M=MONTHLY, S=SEASONAL)
+N                                 ** Continuous snow cover most of the winter? (Y/N)
+Y                                 ** Airport? (Y/N)
+N                                 ** Arid region? (Y/N)
+A                                 ** Surface Moisture (A=Average, W=Wet, D=Dry)
