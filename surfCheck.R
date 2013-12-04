@@ -3,14 +3,13 @@
 ## 
 
 
-library(Hmisc)
-library(openair)
-
 ## This reads a table into a aermet surface file called surface_file_1, skipping the first line
 
 surfCheck <- function(startYear, stopYear, outfile="surfaceFile.pdf", file.choose=FALSE){
   source("surfaceReader.R")
-  library(plyr)
+  require(plyr)
+  require(Hmisc)
+  require(openair)
   
   if(file.choose){
     sFile<-file.choose()
