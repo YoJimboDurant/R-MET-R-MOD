@@ -3,6 +3,7 @@
 
 compAermin <- function(startYear, stopYear, makePDF=FALSE, outfile="compAermin.pdf", sumFilePattern="_comp_.*\\.dat"){
   require(openair)
+  require(lubridate)
   
   years <- seq(startYear, stopYear, by=1)
   sdExist <- sapply(as.character(years), FUN=file.exists )

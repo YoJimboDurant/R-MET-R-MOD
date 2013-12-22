@@ -6,6 +6,7 @@ stage1Rpt <- function(startYear, stopYear, outfile="S1summ.pdf"){
   require(reshape2)
   require(ggplot2)
   require(openair)
+  source("readS1qaRpt.R")
   years <- seq(startYear, stopYear, by=1)
   sdExist <- sapply(as.character(years), FUN=file.exists )
   if(!all(sdExist)) stop(paste("\nSubdirectory missing for:", years[!sdExist], sep=" "))
