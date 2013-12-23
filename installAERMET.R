@@ -6,6 +6,7 @@
 
 
 # Internet options for Windows
+require(downloader)
 
 if (R.version$os !="linux-gnu"){
   setInternet2(use = NA) 
