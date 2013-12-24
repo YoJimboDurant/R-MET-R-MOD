@@ -1,6 +1,7 @@
 #QAaerSurf. A function to QA and visualize output of AERSURFACE program
 # still in development
 
+QAaersurf.R <- function(domainFile="albedo_bowen_domain.txt"){
 require(stringr)
 library(sp)  
 library(raster)  
@@ -15,7 +16,7 @@ require(ggmap)
 
 # read albedo_bowen_domain
 
-albDom <- readLines("albedo_bowen_domain.txt")
+albDom <- readLines(domainFile)
 
 x <- grep("xllcorner", albDom,  value=TRUE)
 y <- grep("yllcorner", albDom,  value=TRUE)
@@ -25,18 +26,22 @@ y <- as.numeric(str_extract(y, "[-]?[[:digit:]]+[.][[:digit:]]"))
 
 llcorner <- project(cbind(x,y), "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs", inv=TRUE)
 #
-lons <- seq(x, x+(334*30), by=30)
-lats <- seq(y, y+(334*30), by=30)
 
 
 # lons <- lons[order(lons)]
+
+
+surfData <- grep("[[:digit:]]{2}[[:blank:]]", albDom, value=TRUE)
+sData <- read.table(textConnection(surfData)) 
+
+lons <- seq(x, x+((dim(sData)[1]-1)*30), by=30)
+lats <- seq(y, y+((dim(sData)[2]-1)*30), by=30)
 lats <- lats[order(-lats)]  # start in upper left corner
 
 latts <- outer(lats, rep(1, length(lats)))
 longs <- outer(rep(1, length(lons)), lons)
 
-surfData <- grep("[[:digit:]]{2}[[:blank:]]", albDom, value=TRUE)
-sData <- read.table(textConnection(surfData)) 
+
 surfData <- melt(sData)
 surfData$x <- as.vector(longs)+15 # 15m added to get to center of box
 surfData$y <- as.vector(latts)+15 # 15m added to get to center of box
@@ -86,9 +91,6 @@ surfData$category <-factor(surfData$category)
 surfData$color <-factor(surfData$color)
 
 g1 <- ggplot(surfData, aes(x=longitude, y=lattitude, colour=category)) +geom_point()
-
-g1+scale_colourbrewer()
-
 g1+scale_color_manual(values=levels(surfData$color))+theme_bw()
 
 meanlat <- mean(surfData$lattitude)
@@ -98,7 +100,13 @@ bmap <- get_map(location=c(lon=meanlon, lat=meanlat), maptype="satellite", zoom=
 
 ggmap(bmap)+geom_point(data=surfData, aes(x=longitude, y=lattitude, colour=category, alpha=1/10))
 
-pdf(file="./aersurface/output.pdf", width=24, height=24)
-ggmap(bmap)
-ggmap(bmap)+geom_point(data=surfData, aes(x=longitude, y=lattitude, colour=category))+scale_color_manual(values=levels(surfData$color))+theme_bw()
+domainFile <- gsub("[.].*", "", domainFile )
+#browser()
+pdf(file=paste("./aersurface/", domainFile,".pdf", sep=""), width=24, height=24)
+print(ggmap(bmap))
+print(ggmap(bmap)+geom_point(data=surfData, aes(x=longitude, y=lattitude, colour=category))+scale_color_manual(values=levels(surfData$color))+theme_bw()+ ggtitle("Albedo Bowen Domain"))
 dev.off()
+
+return(NULL)
+}
+
