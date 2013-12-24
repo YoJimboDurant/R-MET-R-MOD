@@ -1,0 +1,22 @@
+classification,value,category,color
+Water,11,Open Water,dodgerblue3
+Water,12,Perennial Ice/Snow,ghostwhite
+Developed,21,Low Intensity Residential,darksalmon
+Developed,22,High Intensity Residential,red
+Developed,23,Commercial/Industrial/Transportation,firebrick4
+Barren,31,Bare Rock/Sand/Clay,gray80
+Barren,32,Quarries/Strip Mines/Gravel Pits,gray20
+Barren,33,Transitional,black
+Forrested Upland,41,Deciduous Forest,darkolivegreen4
+Forrested Upland,42,Evergreen Forest,darkgreen
+Forrested Upland,43,Mixed Forest,darkolivegreen1
+Shrubland,51,Shrubland,goldenrod
+Non-natural Woody,61,Orchards/Vineyards/Other,olivedrab4
+Herbaceous Upland,71,Grasslands/Herbaceous,bisque
+Herbacous Planted/Cultivated,81,Pasture/Hay,yellow
+Herbacous Planted/Cultivated,82,Row Crops,orange4
+Herbacous Planted/Cultivated,83,Small Grains,orange
+Herbacous Planted/Cultivated,84,Fallow,gray50
+Herbacous Planted/Cultivated,85,Urban/Recreational Grasses,orangered2
+Wetlands,91,Woody Wetlands,cyan
+Wetlands,92,Emergent Herbacerous Wetlands,cyan4
