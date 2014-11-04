@@ -2,7 +2,7 @@
 # still in development
 
 QAaersurf.R <- function(domainFile="albedo_bowen_domain.txt"){
-require(stringr)
+library(stringr)
 library(sp)  
 library(raster)  
 library(rgdal)  
@@ -10,8 +10,8 @@ library(rgeos)
 library(spdep)  
 library(reshape2)
 library(OpenStreetMap)
-require(ggplot2)
-require(ggmap)
+library(ggplot2)
+library(ggmap)
 
 
 # read albedo_bowen_domain

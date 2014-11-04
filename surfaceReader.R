@@ -31,7 +31,8 @@ surfaceReader <- function(sfile){
     "relative_humidity",
     "surface_pressure",
     "cloud_cover",
-    "other_info")
+    "ws_adj_flag",
+    "OtherInfo")
   
   
   is.na(surface_file_1$sensible_heat_flux) <- surface_file_1$sensible_heat_flux == -999.0 
